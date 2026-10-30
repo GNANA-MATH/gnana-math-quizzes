@@ -1,0 +1,32 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>Round 6 — Find the Missing Concept</title>
+<style>
+:root{color-scheme:light}body{margin:0;background:#f0ebf8;font-family:Roboto,Arial,sans-serif;color:#202124}
+.w{max-width:720px;margin:0 auto;padding:12px}.c{background:#fff;border:1px solid #dadce0;border-radius:8px;padding:18px 20px;margin-bottom:12px}
+.h{border-top:10px solid #673ab7}h1{margin:0 0 8px;font-size:26px;font-weight:400}.s{font-size:14px;color:#5f6368}
+.q{font-size:16px;margin-bottom:10px}.q small{color:#5f6368}label{display:flex;gap:10px;align-items:center;padding:7px 6px;border-radius:6px;cursor:pointer}
+input[type=checkbox]{width:18px;height:18px;accent-color:#673ab7}input[type=text]{width:100%;box-sizing:border-box;padding:8px 2px;border:0;border-bottom:1px solid #dadce0;font-size:15px}
+.ok{background:#e6f4ea}.bad{background:#fce8e6}.fb{font-size:13px;margin-top:8px;color:#188038}
+button{background:#673ab7;color:#fff;border:0;border-radius:4px;padding:10px 24px;font-size:14px;cursor:pointer;margin-right:8px}
+button.g{background:none;color:#673ab7}#r{display:none;font-size:18px}.err{color:#d93025;font-size:13px}
+</style></head><body><div class="w"><div class="c h"><h1>Round 6 — Find the Missing Concept</h1>
+<div class="s">Engineering Mathematics Quiz Handbook · VG Academic Publications<br>Tick the box(es) you think are correct. Each question carries 15 points.</div></div>
+<div class="c"><div class="q">Name / Team <span class="err">*</span></div><input type="text" id="n" placeholder="Your answer"></div>
+<div id="f"></div><div id="r" class="c"></div>
+<div><button id="sb">Submit</button><button class="g" id="rb">Clear form</button></div></div>
+<script>
+const D=[["To analyse stresses and strains in a complex bridge, engineers use the ______ Method, solving large linear systems from a discretised object.", ["Fourier", "Bisection", "Monte Carlo", "Finite Element"], [3]], ["In signal processing, the ______ Transform converts a signal from the time domain to the frequency domain.", ["Cayley", "Gauss", "Bernoulli", "Fourier"], [3]], ["Reliability engineers use ______ distributions, such as Weibull or Exponential, to model time until failure.", ["Probability (lifetime)", "Fourier", "Eigenvalue", "Harmonic"], [0]], ["Control engineers model dynamic systems using ______, which describe rates of change of system variables.", ["Taylor polynomials", "Differential equations", "Inequalities", "Determinants"], [1]], ["Finding the minimum material for a loaded beam are examples of ______ problems solved by calculus.", ["Sampling", "Optimization", "Interpolation", "Convergence"], [1]]],PTS=15,F=document.getElementById('f');
+// Build one card per question, with a checkbox for every option.
+D.forEach((q,i)=>{const d=document.createElement('div');d.className='c';d.id='q'+i;
+ d.innerHTML='<div class="q">'+(i+1)+'. '+q[0]+'</div>'+q[1].map((o,j)=>'<label><input type="checkbox" data-q="'+i+'" value="'+j+'"> '+o+'</label>').join('')+'<div class="fb"></div>';F.appendChild(d)});
+// Score: a question is correct only if the ticked set equals the answer set.
+document.getElementById('sb').onclick=()=>{
+ if(!document.getElementById('n').value.trim()){alert('Please enter your name or team.');return}
+ let sc=0;D.forEach((q,i)=>{const bx=[...document.querySelectorAll('[data-q="'+i+'"]')];
+  const sel=bx.filter(b=>b.checked).map(b=>+b.value),ok=sel.length==q[2].length&&q[2].every(a=>sel.includes(a));if(ok)sc+=PTS;
+  bx.forEach(b=>{const l=b.parentElement;l.className=q[2].includes(+b.value)?'ok':(b.checked?'bad':'');b.disabled=true});
+  document.querySelector('#q'+i+' .fb').innerHTML=(ok?'✔ Correct':'✘ Correct answer: '+q[2].map(a=>q[1][a]).join(' ; '))});
+ const r=document.getElementById('r');r.style.display='block';
+ r.innerHTML='<b>'+document.getElementById('n').value+'</b>, your score: <b>'+sc+' / '+D.length*PTS+'</b>';r.scrollIntoView()};
+document.getElementById('rb').onclick=()=>location.reload();
+</script></body></html>

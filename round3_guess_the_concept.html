@@ -1,0 +1,32 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>Round 3 — Guess the Concept</title>
+<style>
+:root{color-scheme:light}body{margin:0;background:#f0ebf8;font-family:Roboto,Arial,sans-serif;color:#202124}
+.w{max-width:720px;margin:0 auto;padding:12px}.c{background:#fff;border:1px solid #dadce0;border-radius:8px;padding:18px 20px;margin-bottom:12px}
+.h{border-top:10px solid #673ab7}h1{margin:0 0 8px;font-size:26px;font-weight:400}.s{font-size:14px;color:#5f6368}
+.q{font-size:16px;margin-bottom:10px}.q small{color:#5f6368}label{display:flex;gap:10px;align-items:center;padding:7px 6px;border-radius:6px;cursor:pointer}
+input[type=checkbox]{width:18px;height:18px;accent-color:#673ab7}input[type=text]{width:100%;box-sizing:border-box;padding:8px 2px;border:0;border-bottom:1px solid #dadce0;font-size:15px}
+.ok{background:#e6f4ea}.bad{background:#fce8e6}.fb{font-size:13px;margin-top:8px;color:#188038}
+button{background:#673ab7;color:#fff;border:0;border-radius:4px;padding:10px 24px;font-size:14px;cursor:pointer;margin-right:8px}
+button.g{background:none;color:#673ab7}#r{display:none;font-size:18px}.err{color:#d93025;font-size:13px}
+</style></head><body><div class="w"><div class="c h"><h1>Round 3 — Guess the Concept</h1>
+<div class="s">Engineering Mathematics Quiz Handbook · VG Academic Publications<br>Tick the box(es) you think are correct. Each question carries 10 points.</div></div>
+<div class="c"><div class="q">Name / Team <span class="err">*</span></div><input type="text" id="n" placeholder="Your answer"></div>
+<div id="f"></div><div id="r" class="c"></div>
+<div><button id="sb">Submit</button><button class="g" id="rb">Clear form</button></div></div>
+<script>
+const D=[["Clues: I use the kernel e^(−st). I map functions of t to functions of s. I simplify differential equations.", ["Fourier series", "Z-transform", "Laplace transform", "Taylor series"], [2]], ["Clues: I have zero divergence. I often represent incompressible flow. I satisfy ∇·F = 0.", ["Solenoidal field", "Irrotational field", "Conservative field", "Harmonic series"], [0]], ["Clues: I approximate integrals with parabolic arcs. I need an even number of subintervals. I am a Newton–Cotes rule.", ["Trapezoidal rule", "Simpson's 1/3 rule", "Euler's method", "Bisection method"], [1]], ["Clues: I transform a matrix to diagonal form. I use eigenvectors. I simplify powers of matrices.", ["Diagonalization", "Gaussian elimination", "Cayley–Hamilton", "Transpose"], [0]], ["Clues: I relate residues inside a closed contour to the contour integral. I am named after a 19th-century French mathematician.", ["Stokes' theorem", "Residue theorem", "Green's theorem", "Rolle's theorem"], [1]], ["Clues: Every square matrix satisfies its own characteristic equation. I am named after an English and an Irish mathematician.", ["Sylvester's theorem", "Cayley–Hamilton theorem", "Stokes' theorem", "Rouché's theorem"], [1]], ["Clues: I relate a surface integral of curl to a line integral around the boundary. I am named after an Irish mathematical physicist.", ["Divergence theorem", "Green's theorem", "Cauchy's theorem", "Stokes' theorem"], [3]], ["Clues: I am a second-order ODE with parameter n. My solutions are denoted Jn(x). I arise in cylindrical boundary-value problems.", ["Bernoulli's equation", "Legendre's equation", "Bessel's equation", "Cauchy–Euler equation"], [2]], ["Clues: I am a vector differential operator. I measure local rotation of a field. I vanish for conservative fields.", ["Curl", "Divergence", "Laplacian", "Gradient"], [0]], ["Clues: I am a type of isolated singularity. I am neither removable nor a pole. I am central to the Casorati–Weierstrass theorem.", ["Essential singularity", "Removable singularity", "Simple pole", "Branch point"], [0]]],PTS=10,F=document.getElementById('f');
+// Build one card per question, with a checkbox for every option.
+D.forEach((q,i)=>{const d=document.createElement('div');d.className='c';d.id='q'+i;
+ d.innerHTML='<div class="q">'+(i+1)+'. '+q[0]+'</div>'+q[1].map((o,j)=>'<label><input type="checkbox" data-q="'+i+'" value="'+j+'"> '+o+'</label>').join('')+'<div class="fb"></div>';F.appendChild(d)});
+// Score: a question is correct only if the ticked set equals the answer set.
+document.getElementById('sb').onclick=()=>{
+ if(!document.getElementById('n').value.trim()){alert('Please enter your name or team.');return}
+ let sc=0;D.forEach((q,i)=>{const bx=[...document.querySelectorAll('[data-q="'+i+'"]')];
+  const sel=bx.filter(b=>b.checked).map(b=>+b.value),ok=sel.length==q[2].length&&q[2].every(a=>sel.includes(a));if(ok)sc+=PTS;
+  bx.forEach(b=>{const l=b.parentElement;l.className=q[2].includes(+b.value)?'ok':(b.checked?'bad':'');b.disabled=true});
+  document.querySelector('#q'+i+' .fb').innerHTML=(ok?'✔ Correct':'✘ Correct answer: '+q[2].map(a=>q[1][a]).join(' ; '))});
+ const r=document.getElementById('r');r.style.display='block';
+ r.innerHTML='<b>'+document.getElementById('n').value+'</b>, your score: <b>'+sc+' / '+D.length*PTS+'</b>';r.scrollIntoView()};
+document.getElementById('rb').onclick=()=>location.reload();
+</script></body></html>
